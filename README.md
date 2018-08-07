@@ -36,7 +36,7 @@ Then try rebooting, it should boot as normal.
 
 ### Enable overlayroot hook
 
-Then add `overlayroot` to your `HOOKS` array in `/etc/mkinitcpio.conf` and rebuild the initramfs by running
+Then add `overlayroot` to your `HOOKS` array and `overlay` to your `MODULES=` array in `/etc/mkinitcpio.conf` and rebuild the initramfs by running
 
 ```
 mkinitcpio -P
@@ -52,7 +52,11 @@ With the initramfs in place, you can now enable overlayroot by adding `overlayro
 root=/dev/mmcblk0p2 rw rootwait console=ttyAMA0,115200 console=tty1 selinux=0 plymouth.enable=0 smsc95xx.turbo_mode=N dwc_otg.lpm_enable=0 kgdboc=ttyAMA0,115200 elevator=noop overlayroot
 ```
 
-or add ```overlayroot``` to ```/boot/boot.txt``` and launch ```./mkscr``` to apply.
+or add `overlayroot` to the end of `/boot/boot.txt` then launch ```./mkscr``` to apply.
+
+```
+setenv bootargs console=ttyS0,115200 console=tty0 root=PARTUUID=${uuid} rw rootwait smsc95xx.macaddr="${usbethaddr}" overlayroot
+```
 
 and reboot. You should see a warning during login that any changes you make to your filesystem will be non-persistent after this point.
 
@@ -62,6 +66,12 @@ You can now also set the entire root filesystem as readonly by changing `rw` to 
 
 ```
 root=/dev/mmcblk0p2 ro rootwait console=ttyAMA0,115200 console=tty1 selinux=0 plymouth.enable=0 smsc95xx.turbo_mode=N dwc_otg.lpm_enable=0 kgdboc=ttyAMA0,115200 elevator=noop overlayroot
+```
+
+or by changing `rw` to `ro` in `/boot/boot.txt` then launch `./mkscr` to apply.
+
+```
+setenv bootargs console=ttyS0,115200 console=tty0 root=PARTUUID=${uuid} ro rootwait smsc95xx.macaddr="${usbethaddr}" overlayroot
 ```
 
 and adding `ro` to `/etc/fstab`
