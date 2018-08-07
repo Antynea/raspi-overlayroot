@@ -52,6 +52,8 @@ With the initramfs in place, you can now enable overlayroot by adding `overlayro
 root=/dev/mmcblk0p2 rw rootwait console=ttyAMA0,115200 console=tty1 selinux=0 plymouth.enable=0 smsc95xx.turbo_mode=N dwc_otg.lpm_enable=0 kgdboc=ttyAMA0,115200 elevator=noop overlayroot
 ```
 
+or add ```overlayroot``` to ```/boot/boot.txt``` and launch ```./mkscr``` to apply.
+
 and reboot. You should see a warning during login that any changes you make to your filesystem will be non-persistent after this point.
 
 ### Set filesystems readonly
